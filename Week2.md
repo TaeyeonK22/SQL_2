@@ -92,7 +92,49 @@ GROUP BY
   집계할_컬럼1
 ```
 
-- pdf 150p부터 보면 됨.
+- DISTINCT: 고유값을 알고 싶은 경우(중복 제거)
+```
+SELECT
+  집계할 컬럼,
+  COUNT(DISTINCT count할 컬럼)
+FROM table
+GROUP BY
+  집계할 컬럼
+```
+
+- WHERE: 조건 설정하기
+  - Table에 바로 조건을 설정하고 싶은 경우 사용
+  - Raw Data인 테이블 데이터에서 조건 설정
+```
+SELECT
+  컬럼1, 컬럼2,
+  COUNT(컬럼1) AS col1_count
+FROM <table>
+WHERE
+ 컬럼 1>=3
+```
+
+- HAVING
+  - GROUP BY한 후 조건을 설정하고 싶은 경우 사용
+```
+SELECT
+  컬럼1, 컬럼2,
+  COUNT(컬럼1) AS col1_count
+FROM <table>
+GROUP BY 컬럼1, 컬럼2
+HAVING
+  col1_count>3
+```
+
+- WHERE이랑 HAVING의 차이는?
+
+|개념|기능|
+|---|---|
+|WHERE|Table에 바로 조건을 설정하고 싶은 경우 사용|
+|HAVING|GROUP BY한 후 조건을 설정하고 싶은 경우 사용|
+
+- 이외
+  - ORDER BY, LIMIT(출력 개수 제한)
 
 <!-- 새롭게 배운 내용을 자유롭게 정리해주세요.-->
 
@@ -102,6 +144,7 @@ GROUP BY
 
 <!-- 이 글을 지우고, 여기에 학습한 것을 인증해주세요.-->
 
+<img src = "image/007_2주차_학습인증.jpg" width="50%" height="50%">
 
 
 <br><br>
@@ -126,7 +169,16 @@ FROM pokemon;
 
 
 ~~~
-여기에 답을 작성해주세요!
+1. ;는 문장이 끝날때만 와야 하는데 여러 번 사용해서 SELECT 이후 문장이 종료됨
+2. WHERE은 FROM이후에 와야 함.
+3. AS 포켓몬에 따옴표 사용. 
+
+<올바른 쿼리>
+SELECT
+  name AS `포켓몬 이름`,
+  ID
+FROM pokemon
+WHERE type = 'Electric';
 ~~~
 
 
@@ -145,7 +197,15 @@ GROUP BY type;
 
 
 ~~~
-여기에 답을 작성해주세요.
+WHERE은 그룹핑 전에 사용하는 것이므로, 여기서는 HAVING을 사용해야 함.
+
+<올바른 쿼리>
+SELECT
+  type,
+  AVG(attack) AS avg_attack
+FROM pokemon
+GROUP BY type
+HAVING AVG(attack) >= 60;
 ~~~
 
 
