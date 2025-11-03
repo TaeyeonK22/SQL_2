@@ -196,7 +196,7 @@ SELECT
 FROM basic.pokemon
 ```
 
-2. vhzptahsdml 'type 1'에 따라 'Water', 'Fire', 'Electric' 타입은 각각 '물', '불', '전기'로, 그 외 타입은 '기타'로 분류하는 새로운 컬럼 'type_Korean'을 만들어 주세요.
+2. 포켓몬의 'type 1'에 따라 'Water', 'Fire', 'Electric' 타입은 각각 '물', '불', '전기'로, 그 외 타입은 '기타'로 분류하는 새로운 컬럼 'type_Korean'을 만들어 주세요.
 
 ```
 SELECT
