@@ -120,7 +120,27 @@ SELECT
     - IF
 
 - 조건문 함수가 사용되는 이유
-  - 
+  - 분석 시 특정 카테고리를 하나로 합치는 전처리가 필요한 경우가 있음
+  - 예시
+    - 데이터를 저장하는 쪽과 분석하는 쪽이 나뉨
+    - 분석할 때 필요한 부분에서 조건 설정해서 변경하는 것이 더 유용
+
+```
+<CASE WHEN: 여러 조건이 있을 경우 유용>
+SELECT
+  CASE
+    WHEN 조건1 THEN 조건1이 참일 경우 결과
+    WHEN 조건2 HTHEN 조건2가 참일 경우 결과
+    ELSE 그 외 조건일 경우 결과
+END AS 새로운_컬럼_이름
+```
+
+```
+<IF: 단일 조건일 경우 유용>
+SELECT
+  IF(1=1, '동일한 결과', '동일하지 않은 결과') AS result1,
+  IF(1=2, '동일한 결과', '동일하지 않은 결과') AS result2
+```
 
 
 <!-- 새롭게 배운 내용을 자유롭게 정리해주세요.-->
@@ -134,6 +154,64 @@ SELECT
 * 4-5, 4-7 각각에서 두 문제 이상 (최소 4문제) 푼 내용 정리하기
 ~~~
 
+## 4-5. 시간 데이터 연습 문제
+
+1. 트레이너가 포켓몬을 포획한 날짜(catch_date)를 기준으로, 2023년 1월에 포획한 포켓몬의 수를 계산해주세요.
+```
+SELECT
+  COUNT(DISTINCT id) AS cnt
+FROM basic.trainer_pokemon
+WHERE"
+  EXTRACT(YEAR FROM DATETIME(catch_datetime, "Asia/Seoul")) = 2023
+  AND EXTRACT(MONTH FROM DATETIME(catch_datetime, "Asia/Seoul")) = 1
+```
+```
+답: 85
+```
+
+2. 배틀이 일어난 시간(battle_datetime)을 기준으로, 오전 6시에서 오후 6시 사이에 일어난 배틀의 수를 계산해주세요.
+
+```
+SELECT
+  COUNT(DISTINCT id) AS battle_cnt
+FROM basic.battle
+WHERE
+  EXTRACT(HOUR FROM battle_datetime) >= 6
+  AND EXTRACT(HOUR FROM battle_datetime) <= 18
+```
+```
+답: 44
+```
+
+## 4-7. 조건문 연습 문제
+
+1. 포켓몬의 'speed'가 70 이상이면 '빠름', 그렇지 않으면 '느림'으로 표시하는 새로운 컬럼 'Speed_Category'를 만들어 주세요.
+
+```
+SELECT
+  id,
+  kor_name,
+  speed,
+  IF(speed >= 70, "빠름", "느림") AS Speed_Category
+FROM basic.pokemon
+```
+
+2. vhzptahsdml 'type 1'에 따라 'Water', 'Fire', 'Electric' 타입은 각각 '물', '불', '전기'로, 그 외 타입은 '기타'로 분류하는 새로운 컬럼 'type_Korean'을 만들어 주세요.
+
+```
+SELECT
+  id,
+  kor_name,
+  type1,
+  CASE
+    WHEN type1 = "Water" THEN "물"
+    WHEN type1 = "Fire" THEN "불"
+    WHEN type1 = "Electric" THEN "전기"
+    ELSE "기타"
+  END AS type1_Korean
+FROM basic.pokemon
+```
+
 <!-- 새롭게 배운 내용을 자유롭게 정리해주세요.-->
 
 
@@ -141,6 +219,15 @@ SELECT
 <br>
 
 <br>
+
+---
+
+# 학습 인증란
+
+<img src = "image/010_5주차_학습인증.jpg" width="50%" height="50%">
+
+<br><br>
+
 
 ---
 
@@ -171,7 +258,8 @@ SELECT
 <!-- 틀린쿼리에 대한 오류의 원인도 같이 작성해주세요. 문제에서 제공된 login_data 컬럼은 DATE type의 데이터를 가지고 있다고 가정하시면 됩니다. -->
 
 ~~~
-여기에 답을 작성해주세요!
+답: 3번
+이유: 연도 전체를 세려면 범위 조건이나 연도 추출이 필요함
 ~~~
 
 
@@ -202,7 +290,8 @@ FROM pokemon;
 <!-- 근거와 함께 답을 작성해주세요 -->
 
 ~~~
-여기에 답을 작성해주세요!
+답: Pikachu, Bulbasaur
+이유: Pikachu와 Bulbasaur는 Fire, Water 모두에 해당하지 않으므로 Normal로 분류된다.
 ~~~
 
 
