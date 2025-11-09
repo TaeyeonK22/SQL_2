@@ -82,6 +82,16 @@
 * 각 JOIN 방법들의 차이점에 대해서 설명할 수 있다. 
 ~~~
 
+- JOIN 방법들의 종류
+  - INNER JOIN: 두 테이블의 **공통** 요소만 연결
+  - LEFT/RIGHT (OUTER) JOIN: 왼쪽/오른쪽 테이블 기준으로 연결
+  - FULL (OUTER) JOIN: **양쪽** 기준으로 연결
+  - CROSS JOIN: 두 테이블의 각각의 **요소**를 **곱하기**
+
+- JOIN 방법들의 차이점(그림)
+<br><img src = "image/012_다양한_SQL_JOIN_방법.jpg" width="70%" height="70%"><br><img src = "image/013_JOIN_집합_관점.jpg" width="70%" height="70%">
+
+
 <!-- 새롭게 배운 내용을 자유롭게 정리해주세요.-->
 
 
@@ -94,8 +104,24 @@
 * JOIN 을 활용한 쿼리를 작성할 수 있다. 
 ~~~
 
-<!-- 새롭게 배운 내용을 자유롭게 정리해주세요.-->
+```
+SELECT
+  A.col1,
+  A.col2,
+  B.col11,
+  B.col12
+FROM table1 AS A
+LEFT JOIN table2 AS B
+ON A.key = B.key
+```
 
+- JOIN 문법
+  - FROM 하단에 JOIN 할 Table을 작성하고 ON 뒤에 공통된 컬럼(Key)를 작성
+  - LEFT JOIN 자리에 INNER, RIGHT, FULL, CROSS 가 들어가면 됨.
+  - 테이블 이름이 길 수 있기 때문에 별칭(Alias)를 정의해줄 수 있음
+
+
+<!-- 새롭게 배운 내용을 자유롭게 정리해주세요.-->
 
 
 ## 5-6. JOIN 연습문제 1~5번 
@@ -104,6 +130,65 @@
 ✅ 학습 목표 :
 * 연습문제(3문제 이상) 푼 것들 정리하기
 ~~~
+
+1. 트레이너가 보유한 포켓몬들은 얼마나 있는지 알 수 있는 쿼리를 작성해 주세요.
+
+```
+SELECT
+  COUNT(*) AS cnt
+FROM basic.trainer_pokemon
+WHERE
+  status IN ("Active", "Training")
+```
+
+
+2. 각 트레이너가 가진 포켓몬 중에서 'Grass'타입의 포켓몬 수를 계산해 주세요.(단, 편의를 위해 type1 기준으로 계산해주세요)
+
+```
+SELECT
+  P.TYPE1,
+  COUNT(tp.id) AS pokemon_Cnt
+FROM (
+  SELECT
+    id,
+    trainer_id,
+    pokemon_id,
+    status
+  FROM basic.trainer_pokemon
+  WHERE
+    status IN ("Active", Training")
+)  AS tp
+LEFT JOIN basic.pokemon AS p
+ON tp.pokemon_id = p.id
+WHERE
+  type 1 = "Grass"
+GROUP BY
+  type1
+ORDER BY
+  2 DESC
+```
+
+```
+답: 23
+```
+
+3. 트레이너의 고향(hometown)과 포켓몬을 포획한 위치(location)를 비교하여, 자신의 고향에서 포켓몬을 포획한 트레이너의 수를 계산해주세요.(참고 status 상관없이 구해주세요.)
+
+```
+SELECT
+  COUNT(DISTINCT tp.trainer_id) AS trainer_uniq,
+  COUNT(tp.trianer_id) AS trainer_cnt,
+FROM basic.trainer AS t
+LEFT JOIN basic.trianer_pokemon AS tp
+ON t.id = tp.trainer_id
+WHERE
+  tp.location IS NOT NULL
+  AND t.hometonw = tp.location
+```
+
+```
+답: 43
+```
 
 <!-- 새롭게 배운 내용을 자유롭게 정리해주세요.-->
 
